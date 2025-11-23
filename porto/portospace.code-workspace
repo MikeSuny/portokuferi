@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "E:/FeryPage-main/FeryPage-main/public"
+		},
+		{
+			"path": "E:/FeryPage-main/FeryPage-main/src"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "public"
+	}
+}

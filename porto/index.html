@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Roblox</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      position: relative;
+    }
+
+    /* Video Background */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3; /* Di belakang semua */
+    }
+
+    /* Gradient tambahan (opsional) */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      opacity: 0.15;
+      z-index: -2; 
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 26, 46, 0.85);
+      z-index: -1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 25px;
+    }
+
+    /* Header */
+    header {
+      padding: 40px 0 60px;
+      background: linear-gradient(180deg, #16213e 0%, #1a1a2e 100%);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .profile-pic {
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(135deg, #e94560 0%, #c23354 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      flex-shrink: 0;
+      transform: rotate(-3deg);
+      box-shadow: 0 8px 24px rgba(233, 69, 96, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Untuk foto profil nanti - hapus emoji 🎮 dan uncomment kode ini:
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    */
+
+    .header-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .header-text h1 {
+      margin: 0 0 8px 0;
+      font-size: 38px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 17px;
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 35px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      background: #e94560;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .stat-text {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .stat-text strong {
+      display: block;
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    /* Main Content */
+    main {
+      padding: 50px 0;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-header {
+      margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 8px 0;
+      font-size: 26px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: #999;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Skills */
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .skill-item {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 4px solid #e94560;
+      transition: transform 0.2s;
+    }
+
+    .skill-item:hover {
+      transform: translateX(4px);
+    }
+
+    .skill-item h4 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-item p {
+      margin: 0;
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .project {
+      background: #16213e;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .project:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-header {
+      padding: 30px 24px;
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+      text-align: center;
+      font-size: 48px;
+      border-bottom: 2px solid #e94560;
+    }
+
+    .project-body {
+      padding: 20px 24px 24px;
+    }
+
+    .project-body h3 {
+      margin: 0 0 8px 0;
+      font-size: 19px;
+      color: #fff;
+    }
+
+    .project-body p {
+      margin: 0 0 16px 0;
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tech-tag {
+      background: #0f3460;
+      color: #e94560;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      background: #16213e;
+      padding: 50px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    footer h3 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    footer p {
+      margin: 0 0 30px 0;
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: #1a1a2e;
+      border: 2px solid #0f3460;
+      border-radius: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: #e94560;
+      background: #0f3460;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .header-text {
+        min-width: auto;
+      }
+
+      .stats {
+        justify-content: center;
+      }
+
+      .header-text h1 {
+        font-size: 32px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+</head>
+<body>
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="waguri.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="profile-pic">
+          <!-- Untuk ganti foto profil, uncomment baris di bawah dan ganti URL-nya:
+          <img src="URL_FOTO_PROFIL_LO" alt="Fery">
+          -->
+          👨‍💻
+        </div>
+        <div class="header-text">
+          <h1 id="main-name">Fery</h1>
+          <p id="tagline">Halo, saya Fery. Saya developer yang menguasai JavaScript, Lua, dan Python dengan kemampuan menengah. Saya terus belajar dan mengembangkan proyek di bidang aplikasi dan game.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-icon">📅</div>
+          <div class="stat-text">
+            <strong>4+ tahun</strong>
+            pengalaman
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">💻</div>
+          <div class="stat-text">
+            <strong>0 project</strong>
+            selesai
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-text">
+            <strong>Skill Scripting</strong>
+            intermediate
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- About Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Tentang Saya</h2>
+          <p id="about-intro">Saya.</p>
+        </div>
+        <p style="color: #bbb; line-height: 1.7; font-size: 15px; margin: 0;" id="experience-text">Pengalaman gue mostly di combat systems, inventory management, sama player progression. Gue suka banget nge-optimize code biar performa game tetep smooth, dan gue selalu implement proper data handling pake DataStoreService biar data player ga ilang.</p>
+      </section>
+
+      <!-- Skills Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2 id="skills-header">Yang Gue Bisa</h2>
+        </div>
+        <div class="skills-list">
+          <div class="skill-item">
+            <h4>⚡ Lua Scripting</h4>
+            <p>Roblox Studio And World Of Warcraft</p>
+          </div>
+          <div class="skill-item">
+            <h4>💬 Komunikasi</h4>
+            <p>Saya Tidak Jago Dalam Komunikasi, Tetapi Saya Bisa Kerja Sama Mungkin</p>
+          </div>
+          <div class="skill-item">
+            <h4>📖 JavaScript Skill</h4>
+            <p>Saya Bisa Buat Website Menengah</p>
+          </div>
+          <div class="skill-item">
+            <h4>💾 Phyton</h4>
+            <p>Saya Bisa Bikin Permainan Sederhana Hanya Menggunakan Phyton</p>
+          </div>
+          <div class="skill-item">
+            <h4>🖥️ C# dan C++ </h4>
+            <p>Saya Lumayan Bisa Di Program Ini Karena Saya Sempet Develop Gtps Sehingga Saya Lumayan Bisa</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <h3 id="footer-text">Mau kolaborasi atau butuh scripter?</h3>
+      <p>Hit me up, gue open buat project baru!</p>
+      <div class="social-links">
+        <a href="https://www.roblox.com/users/3639469719/profile" target="_blank" rel="noopener noreferrer" class="social-link">
+          <span>🎮</span>
+          <span>Roblox</span>
+        </a>
+        <a href="https://discord.com/users/1322804866900562021" target="_blank" rel="noopener noreferrer" class="social-link">
+          <span>💬</span>
+          <span>Discord</span>
+        </a>
+        <a href="https://github.com/MikeSuny" target="_blank" rel="noopener noreferrer" class="social-link">
+          <span>💻</span>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    const defaultConfig = {
+      background_color: '#1C1919E',
+      surface_color: '#16213e',
+      text_color: '#eeeeee',
+      primary_color: '#e94560',
+      accent_color: '#0f3460',
+      font_family: 'Segoe UI',
+      font_size: 16,
+      main_name: 'Feryii',
+      tagline: 'Halo, saya Fery. Saya developer yang menguasai JavaScript, Lua, dan Python dengan kemampuan menengah. Saya terus belajar dan mengembangkan proyek di bidang aplikasi dan game.',
+      about_intro: 'Nama saya Fery. Saya seorang developer yang fokus pada pengembangan aplikasi dan game. Saya bekerja menggunakan JavaScript, Lua, dan Python dengan kemampuan tingkat menengah. Saya suka belajar hal baru, membangun proyek kreatif, dan terus meningkatkan skill programming saya.',
+      experience_text: 'Saya memiliki pengalaman bekerja di Roblox Studio dalam pembuatan game, sistem, dan berbagai mekanik. Saya juga terbiasa menggunakan Visual Studio Code dan Microsoft Visual Studio untuk mengerjakan project JavaScript, Lua, Python, serta eksperimen aplikasi. Selain itu, saya memiliki pengalaman dengan Golang untuk membuat backend sederhana. Dalam pengembangan game, saya pernah membuat game Roblox, game pixel lainnya, serta bekerja dengan Growtopia Private Server, mulai dari menambahkan custom item hingga mengatur sistem dan konfigurasi server.',
+      skills_header: 'Skill Saya',
+      footer_text: 'Mau kolaborasi atau butuh scripter?'
+    };
+
+    const config = defaultConfig;
+
+    async function onConfigChange(cfg) {
+      const baseSize = cfg.font_size || defaultConfig.font_size;
+      const customFont = cfg.font_family || defaultConfig.font_family;
+      const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
+      
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.background = cfg.background_color || defaultConfig.background_color;
+      document.body.style.color = cfg.text_color || defaultConfig.text_color;
+      document.body.style.fontSize = `${baseSize}px`;
+      
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.background = `linear-gradient(180deg, ${cfg.surface_color || defaultConfig.surface_color} 0%, ${cfg.background_color || defaultConfig.background_color} 100%)`;
+      }
+      
+      const profilePic = document.querySelector('.profile-pic');
+      if (profilePic) {
+        profilePic.style.background = `linear-gradient(135deg, ${cfg.primary_color || defaultConfig.primary_color} 0%, ${cfg.primary_color || defaultConfig.primary_color} 100%)`;
+      }
+      
+      const mainName = document.getElementById('main-name');
+      if (mainName) {
+        mainName.textContent = cfg.main_name || defaultConfig.main_name;
+        mainName.style.fontSize = `${baseSize * 2.375}px`;
+        mainName.style.color = cfg.text_color || defaultConfig.text_color;
+      }
+      
+      const tagline = document.getElementById('tagline');
+      if (tagline) {
+        tagline.textContent = cfg.tagline || defaultConfig.tagline;
+        tagline.style.fontSize = `${baseSize * 1.0625}px`;
+      }
+      
+      const statIcons = document.querySelectorAll('.stat-icon');
+      statIcons.forEach(icon => {
+        icon.style.background = cfg.primary_color || defaultConfig.primary_color;
+      });
+      
+      const aboutIntro = document.getElementById('about-intro');
+      if (aboutIntro) {
+        aboutIntro.textContent = cfg.about_intro || defaultConfig.about_intro;
+        aboutIntro.style.fontSize = `${baseSize * 0.9375}px`;
+      }
+      
+      const experienceText = document.getElementById('experience-text');
+      if (experienceText) {
+        experienceText.textContent = cfg.experience_text || defaultConfig.experience_text;
+        experienceText.style.fontSize = `${baseSize * 0.9375}px`;
+      }
+      
+      const skillsHeader = document.getElementById('skills-header');
+      if (skillsHeader) {
+        skillsHeader.textContent = cfg.skills_header || defaultConfig.skills_header;
+        skillsHeader.style.fontSize = `${baseSize * 1.625}px`;
+        skillsHeader.style.color = cfg.text_color || defaultConfig.text_color;
+      }
+      
+      const sectionHeaders = document.querySelectorAll('.section-header h2');
+      sectionHeaders.forEach(h2 => {
+        h2.style.fontSize = `${baseSize * 1.625}px`;
+        h2.style.color = cfg.text_color || defaultConfig.text_color;
+      });
+      
+      const skillItems = document.querySelectorAll('.skill-item');
+      skillItems.forEach(item => {
+        item.style.background = cfg.surface_color || defaultConfig.surface_color;
+        item.style.borderLeftColor = cfg.primary_color || defaultConfig.primary_color;
+      });
+      
+      const projects = document.querySelectorAll('.project');
+      projects.forEach(project => {
+        project.style.background = cfg.surface_color || defaultConfig.surface_color;
+      });
+      
+      const projectHeaders = document.querySelectorAll('.project-header');
+      projectHeaders.forEach(header => {
+        header.style.background = `linear-gradient(135deg, ${cfg.accent_color || defaultConfig.accent_color} 0%, ${cfg.surface_color || defaultConfig.surface_color} 100%)`;
+        header.style.borderBottomColor = cfg.primary_color || defaultConfig.primary_color;
+      });
+      
+      const techTags = document.querySelectorAll('.tech-tag');
+      techTags.forEach(tag => {
+        tag.style.background = cfg.accent_color || defaultConfig.accent_color;
+        tag.style.color = cfg.primary_color || defaultConfig.primary_color;
+        tag.style.fontSize = `${baseSize * 0.75}px`;
+      });
+      
+      const footer = document.querySelector('footer');
+      if (footer) {
+        footer.style.background = cfg.surface_color || defaultConfig.surface_color;
+      }
+      
+      const footerText = document.getElementById('footer-text');
+      if (footerText) {
+        footerText.textContent = cfg.footer_text || defaultConfig.footer_text;
+        footerText.style.fontSize = `${baseSize * 1.375}px`;
+        footerText.style.color = cfg.text_color || defaultConfig.text_color;
+      }
+      
+      const socialLinks = document.querySelectorAll('.social-link');
+      socialLinks.forEach(link => {
+        link.style.background = cfg.background_color || defaultConfig.background_color;
+        link.style.borderColor = cfg.accent_color || defaultConfig.accent_color;
+        link.style.color = cfg.text_color || defaultConfig.text_color;
+        link.style.fontSize = `${baseSize * 0.9375}px`;
+      });
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_color || defaultConfig.background_color,
+            set: (value) => {
+              cfg.background_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => cfg.surface_color || defaultConfig.surface_color,
+            set: (value) => {
+              cfg.surface_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ surface_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['main_name', cfg.main_name || defaultConfig.main_name],
+        ['tagline', cfg.tagline || defaultConfig.tagline],
+        ['about_intro', cfg.about_intro || defaultConfig.about_intro],
+        ['experience_text', cfg.experience_text || defaultConfig.experience_text],
+        ['skills_header', cfg.skills_header || defaultConfig.skills_header],
+        ['footer_text', cfg.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      onConfigChange(config);
+    });
+  </script>
+</body>
+</html>
